@@ -1,0 +1,21 @@
+todas essas variveis são necessarias para fazer o "for" funcionar.
+
+!coloque o numero de rows e coluns de acordo com a sua pixelArt!
+
+this.rows = numero de rows;
+this.coluns = numero de coluns;
+this.blockSize = {width: (this.width/this.coluns), height: (this.height/this.rows)};
+this.map[o mapa dentro]
+this.colors = [array de coores]
+
+
+for(let eachRow = 0; eachRow < this.rows; eachRow++)
+{   for(let eachColun = 0; eachColun < this.coluns; eachColun++)
+    {   let arrayIndex = eachRow * this.coluns + eachColun;
+        if(this.map[arrayIndex]){
+
+            ctx.fillStyle = this.colors[this.colors.indexOf(this.map[arrayIndex])+1];
+            ctx.fillRect(this.x+this.blockSize.width*eachColun, this.y+this.blockSize.height*eachRow, this.blockSize.width+1,this.blockSize.height+1);
+        }            
+    }
+}
