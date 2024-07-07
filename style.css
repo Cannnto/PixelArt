@@ -11,94 +11,37 @@ body{
     width: 100vw;
     height: 100vh;
     display: flex;
+    justify-content: space-evenly;
+    align-items: center;
     background-color: rgb(68, 64, 64);
 }
 canvas{
     border-radius: 1vw;
 }
-
-.menu{
+.container{
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 5vw;
-    height: 100%;
-    background-color: rgb(170, 170, 170);
-    border: solid 2px black;
-}
-.content{
-    display: flex;
     justify-content: center;
-    align-items: center;
-    width: 100%;
     height: 100%;
-}
-.Toolsbutton{
-    width: 50px;
-    height: 50px;
-    margin-top: 5vh;
-    background-color: transparent;
-    border: none;
-}
-
-.Toolsbutton:hover{
-    background-color: rgb(143, 143, 143);
 }
 
 .formulario{
     /* border: 1vw black solid; */
-    width: 100%;
+    /* width: 30vw; */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-
-.size{
-    display: none;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    border-radius: 10px;
-    margin-left: 100px;
-    margin-top: 5vh;
-    background-color: white;
-    border: solid 1px black;
-}
-
-.sizeContent{
-    width: 80%;
-}
-
-.apply{
-    background-color: transparent;
-    border: none;
-    margin-left: 25%;
-    margin-top: 5%;
-    padding: 5%;
-}  
-
-.apply:hover{
-    background-color: rgb(238, 238, 238);
-
-}
-
 .labels{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin-top: 0.5vw;
 }
 .labels input{
     border-radius: 1vw;
     margin-left: 0.3vw;
-    width: 90%;
-    height: 10%;
-    text-align: center;
-} 
-
+}
 .tools{
-    display: flex;
-    flex-direction: column;
+    margin-top: 5vw;
 }
