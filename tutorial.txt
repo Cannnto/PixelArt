@@ -6,16 +6,14 @@ this.rows = numero de rows;
 this.coluns = numero de coluns;
 this.blockSize = {width: (this.width/this.coluns), height: (this.height/this.rows)};
 this.map[o mapa dentro]
-this.colors = [array de coores]
-
+this.colors = [array de cores]
 
 for(let eachRow = 0; eachRow < this.rows; eachRow++)
 {   for(let eachColun = 0; eachColun < this.coluns; eachColun++)
     {   let arrayIndex = eachRow * this.coluns + eachColun;
-        if(this.map[arrayIndex]){
-
-            ctx.fillStyle = this.colors[this.colors.indexOf(this.map[arrayIndex])+1];
-            ctx.fillRect(this.x+this.blockSize.width*eachColun, this.y+this.blockSize.height*eachRow, this.blockSize.width+1,this.blockSize.height+1);
+        if(this.map[arrayIndex] >= 0)
+        {   ctx.fillStyle = this.colors[this.map[arrayIndex]];
+            ctx.fillRect(this.blockSize.width*eachColun, this.blockSize.height*eachRow, this.blockSize.width+1,this.blockSize.height+1);
         }            
     }
 }

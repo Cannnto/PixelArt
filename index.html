@@ -5,55 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PixelArtGenerator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
-    <div class="container">
+<div class="menu" onclick="undoPopUps()">
         <div class="formulario">
-            <div class="labels">
-                <label for="">Number of Rows:</label>
-                <input type="number" id="rows">
-            </div>
-            <div class="labels">
-                <label for="">Number of Coluns:</label>
-                <input type="number" id="coluns">
-            </div>
-            <div class="labels">
-                <button id="submit">Atualizar</button>
-                <button id="copy" onclick="copyMap">Copiar</button>
-            </div>
+                <button class="Toolsbutton" onclick="openSize()">SIZE</button>
+                <button id="copy" class="Toolsbutton" onclick="copyMap">COPY</button>
+                <button value="0" id="theme" class="Toolsbutton" onclick="changeTheme()">THEME</button>
         </div>
         <div class="tools">
-            <button value="0" id="eraser">borracha</button>
-            <input type="color" id="color">
+            <button value="0" id="brush" class="Toolsbutton" onclick="brushOn()"><span class="material-symbols-outlined">brush</span></button>
+            <button value="0" id="eraser" class="Toolsbutton" onclick="eraserOn()"><span class="material-symbols-outlined">ink_eraser</span></button>
+            <input type="color" id="color" class="Toolsbutton">
         </div>
+</div>
+<div class="content" onclick="undoPopUps()">
+
+</div>
+
+<div class="size">
+    <div class="sizeContent">
+        <div class="labels">
+            <label for="">Rows:</label>
+            <input type="number" id="rows" min="0" value="0">
+        </div>
+        <div class="labels">
+            <label for="">Coluns:</label>
+            <input type="number" id="coluns" min="0" value="0">
+        </div>
+        <button class="apply" id="submit">APPLY</button>
     </div>
+</div>
+
 <script src="Grid.js"></script>
 <script src="settings.js"></script>
 <script>
         var canvas = document.createElement("canvas");
         var ctx = canvas.getContext("2d");
-        document.body.appendChild(canvas);
-        canvas.width = 1400;
-        canvas.height = 500;
+        document.querySelector(".content").appendChild(canvas);
+        canvas.width = 1300;
+        canvas.height = 800;
         
         document.querySelector('#submit').addEventListener('click', atualiza);
         document.querySelector('#copy').addEventListener('click', copyMap);
         var eraser = document.querySelector('#eraser');
         var color = document.querySelector('#color');
-        eraser.addEventListener('click', eraserOn)
+        var theme = document.querySelector('#theme');
+        var themeBackground = "black";
+        var time = 0
+
+        function changeTheme()
+        {   theme.value = (Number(document.querySelector('#theme').value)+1)%2;
+            if(Number(theme.value)) themeBackground = 'rgb(173,164,164)';
+            else themeBackground = 'black';
+            console.log(themeBackground)
+        }
+        
+        function brushOn()
+        {   eraser.value = 0
+        }
 
         function eraserOn()
-        {   eraser.value = (Number(eraser.value)+1)%2
+        {   eraser.value = 1
         }
 
         function atualiza()
-        {   grid.coluns = Number(document.querySelector('#coluns').value);
+        {   var size = document.querySelector(".size")
+            size.style.display = "none"
+            grid.coluns = Number(document.querySelector('#coluns').value);
             grid.rows = Number(document.querySelector('#rows').value);
             grid.updateMap();
         }
+
+        function openSize()
+        {   time = new Date()
+            var size = document.querySelector(".size")
+            size.style.display = "flex"
+        }
+
+        function undoPopUps()
+        {   
+            var size = document.querySelector(".size")
+            if(new Date()-time > 100)
+            {
+                size.style.display = "none"
+            }
+        }
             
         function copyMap()
-        {   navigator.clipboard.writeText(`[${grid.map}], [${grid.colors}]`)
+        {   navigator.clipboard.writeText(`[${grid.map}], [${grid.realColors}]`)
 
         }
 
@@ -61,14 +102,14 @@
         var grid = new Grid(10,10);
 
         function loop()
-        {   ctx.fillStyle = 'black';
+        {   ctx.fillStyle = themeBackground;
             ctx.fillRect(0, 0, canvas.width, canvas.height);      
 
-            grid.draw();
+            // console.log(theme.value)
+
+            grid.draw(Number(theme.value));
             var mouseCanvasX = (mouse.x - canvas.getBoundingClientRect().left);
             var mouseCanvasY = (mouse.y - canvas.getBoundingClientRect().top);
-            console.log(mouseCanvasX, mouse.x)
-
             if(keys[1] &&  mouseCanvasX >= 0 && mouseCanvasY >= 0 && mouseCanvasX < canvas.width && mouseCanvasY < canvas.height)   grid.update(mouseCanvasX, mouseCanvasY, Number(eraser.value));
             grid.iterate(color.value);
         }
