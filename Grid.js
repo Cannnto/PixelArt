@@ -39,7 +39,7 @@ class Grid
         this.map[this.coluns * this.rows-1] = undefined;
     }
 
-    update(mouseX, mouseY, type)
+    update(mouseX, mouseY, type, gotas)
     {   var colun = (Math.ceil(mouseX/this.blockSize.width));
         var row = (Math.ceil(mouseY/this.blockSize.height));
 
@@ -49,11 +49,15 @@ class Grid
                 if(eachColun == colun-1 && eachRow == row-1)
                 {   if(type)    this.map[arrayIndex] = undefined;
                     else
-                    {   if(this.colors.indexOf(this.currentColor) == -1)
-                        {   this.colors.push(this.currentColor);
-                            this.realColors.push(`'${this.currentColor}'`);
+                    {   
+                        if(gotas) color.value = this.colors[this.map[arrayIndex]];
+                        else
+                        {   if(this.colors.indexOf(this.currentColor) == -1)
+                            {   this.colors.push(this.currentColor);
+                                this.realColors.push(`'${this.currentColor}'`);
+                            }
+                            this.map[arrayIndex] = this.colors.indexOf(this.currentColor);
                         }
-                        this.map[arrayIndex] = this.colors.indexOf(this.currentColor);
                     }
                 }
             }

@@ -11,10 +11,12 @@
 <div class="menu" onclick="undoPopUps()">
         <div class="formulario">
                 <button class="Toolsbutton" onclick="openSize()">SIZE</button>
+                <button class="Toolsbutton" onclick="openCanvasSize()">C.SIZE</button>
                 <button id="copy" class="Toolsbutton" onclick="copyMap">COPY</button>
                 <button value="0" id="theme" class="Toolsbutton" onclick="changeTheme()">THEME</button>
         </div>
         <div class="tools">
+            <button value="0" id="gotas" class="Toolsbutton" onclick="gotasOn()">GOTAS</button>            
             <button value="0" id="brush" class="Toolsbutton" onclick="brushOn()"><span class="material-symbols-outlined">brush</span></button>
             <button value="0" id="eraser" class="Toolsbutton" onclick="eraserOn()"><span class="material-symbols-outlined">ink_eraser</span></button>
             <input type="color" id="color" class="Toolsbutton">
@@ -38,19 +40,39 @@
     </div>
 </div>
 
+<div class="canvasSize">
+    <div class="sizeContent">
+        <div class="labels">
+            <label for="">Width:</label>
+            <input type="number" id="width" min="0" value="0">
+        </div>
+        <div class="labels">
+            <label for="">Height:</label>
+            <input type="number" id="height" min="0" value="0">
+        </div>
+        <button class="apply" id="submitSize">APPLY</button>
+    </div>
+</div>
+
+<!-- <div class="colors">
+
+</div> -->
+
 <script src="Grid.js"></script>
 <script src="settings.js"></script>
 <script>
         var canvas = document.createElement("canvas");
         var ctx = canvas.getContext("2d");
         document.querySelector(".content").appendChild(canvas);
-        canvas.width = 1300;
+        canvas.width = 800;
         canvas.height = 800;
         
         document.querySelector('#submit').addEventListener('click', atualiza);
+        document.querySelector('#submitSize').addEventListener('click', atualizaSize);
         document.querySelector('#copy').addEventListener('click', copyMap);
         var eraser = document.querySelector('#eraser');
         var color = document.querySelector('#color');
+        var gotas = document.querySelector('#gotas');
         var theme = document.querySelector('#theme');
         var themeBackground = "black";
         var time = 0
@@ -63,11 +85,18 @@
         }
         
         function brushOn()
-        {   eraser.value = 0
+        {   eraser.value = 0;
+            gotas.value = 0;
+        }
+
+        function gotasOn()
+        {   gotas.value = 1;
+            eraser.value = 0;
         }
 
         function eraserOn()
-        {   eraser.value = 1
+        {   eraser.value = 1;
+            gotas.value = 0;
         }
 
         function atualiza()
@@ -78,18 +107,31 @@
             grid.updateMap();
         }
 
+        function atualizaSize()
+        {   var canvasSize = document.querySelector(".canvasSize")
+            canvasSize.style.display = "none"
+            canvas.width = Number(document.querySelector('#width').value);
+            canvas.height = Number(document.querySelector('#height').value);
+        }
+
         function openSize()
-        {   time = new Date()
-            var size = document.querySelector(".size")
-            size.style.display = "flex"
+        {   time = new Date();
+            var size = document.querySelector(".size");
+            size.style.display = "flex";
+        }
+        function openCanvasSize()
+        {   time = new Date();
+            var canvasSize = document.querySelector(".canvasSize");
+            canvasSize.style.display = "flex";
         }
 
         function undoPopUps()
-        {   
-            var size = document.querySelector(".size")
-            if(new Date()-time > 100)
-            {
+        {   var size = document.querySelector(".size");
+            var canvasSize = document.querySelector(".canvasSize");            
+                if(new Date()-time > 100)
+                {
                 size.style.display = "none"
+                canvasSize.style.display = "none"                    
             }
         }
             
@@ -110,7 +152,7 @@
             grid.draw(Number(theme.value));
             var mouseCanvasX = (mouse.x - canvas.getBoundingClientRect().left);
             var mouseCanvasY = (mouse.y - canvas.getBoundingClientRect().top);
-            if(keys[1] &&  mouseCanvasX >= 0 && mouseCanvasY >= 0 && mouseCanvasX < canvas.width && mouseCanvasY < canvas.height)   grid.update(mouseCanvasX, mouseCanvasY, Number(eraser.value));
+            if(keys[1] &&  mouseCanvasX >= 0 && mouseCanvasY >= 0 && mouseCanvasX < canvas.width && mouseCanvasY < canvas.height)   grid.update(mouseCanvasX, mouseCanvasY, Number(eraser.value), Number(gotas.value));
             grid.iterate(color.value);
         }
     </script>
